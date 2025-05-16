@@ -9,19 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    // Показать корзину
     public function index()
     {
         if (!auth()->check()) {
             return view('cart.guest');
         }
-        
+
         $items = CartItem::with('knife')->where('user_id', Auth::id())->get();
 
         return view('cart.index', compact('items'));
     }
 
-    // Добавить товар в корзину
     public function add(Request $request, $knifeId)
     {
         $userId = Auth::id();
@@ -42,7 +40,6 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Товар добавлен в корзину!');
     }
 
-    // Удалить товар из корзины
     public function remove($id)
     {
         $cartItem = CartItem::findOrFail($id);
